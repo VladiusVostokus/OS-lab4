@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	fs "OS_lab4/FileSystem"
+)
 
 func main() {
-	fmt.Println("Hello world!")
-}
+	filesystem := fs.FileSystem{}
+	filesystem.Mkfs(100)
+} 
