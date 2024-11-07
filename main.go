@@ -10,4 +10,5 @@ func main() {
 	filesystem.Create("file.txt")
 	filesystem.Create("a.txt")
 	filesystem.Ls()
+	filesystem.Stat("file.txt")
 } 

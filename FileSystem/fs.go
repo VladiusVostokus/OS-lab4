@@ -30,3 +30,11 @@ func (fs *FileSystem) Ls() {
 		fmt.Println("Name:",f ,"\t id:",d.Id)
 	}
 }
+
+func (fs *FileSystem) Stat(fileName string) {
+	descriptor := fs.directory[fileName]
+	fmt.Println("Type:", descriptor.FileType, 
+				"\tId:",descriptor.Id, 
+				"\tHard links count:", descriptor.Nlink, 
+				"\tSize:", descriptor.Size)
+}
