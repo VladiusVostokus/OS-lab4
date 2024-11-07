@@ -7,4 +7,5 @@ import (
 func main() {
 	filesystem := fs.FileSystem{}
 	filesystem.Mkfs(100)
+	filesystem.Create("file.txt")
 } 
