@@ -14,4 +14,6 @@ func main() {
 	filesystem.Link("file.txt","file2.txt")
 	filesystem.Stat("file.txt")
 	filesystem.Stat("file2.txt")
+	filesystem.Unlink("file.txt")
+	filesystem.Stat("file2.txt")
 } 

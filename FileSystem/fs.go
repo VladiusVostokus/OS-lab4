@@ -45,3 +45,10 @@ func (fs *FileSystem) Link(linkWith, toLink string) {
 	fs.directory[toLink] = descriptor
 	fmt.Println("Create hard link", toLink, "with", linkWith)
 }
+
+func (fs *FileSystem) Unlink(fileName string) {
+	fmt.Println("Delete file:", fileName)
+	descriptor := fs.directory[fileName]
+	descriptor.Nlink--
+	delete(fs.directory, fileName)
+}
