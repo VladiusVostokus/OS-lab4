@@ -23,3 +23,10 @@ func (fs* FileSystem) Create (fileName string) {
 	fs.directory[fileName] = descriptor
 	fmt.Println("Create file:", fileName,"| Descriptor id:", descriptor.Id)
 }
+
+func (fs *FileSystem) Ls() {
+	fmt.Println("Hard links of currect directory:")
+	for f, d := range fs.directory {
+		fmt.Println("Name:",f ,"\t id:",d.Id)
+	}
+}
