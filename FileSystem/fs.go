@@ -38,3 +38,10 @@ func (fs *FileSystem) Stat(fileName string) {
 				"\tHard links count:", descriptor.Nlink, 
 				"\tSize:", descriptor.Size)
 }
+
+func (fs *FileSystem) Link(linkWith, toLink string) {
+	descriptor := fs.directory[linkWith]
+	descriptor.Nlink++
+	fs.directory[toLink] = descriptor
+	fmt.Println("Create hard link", toLink, "with", linkWith)
+}

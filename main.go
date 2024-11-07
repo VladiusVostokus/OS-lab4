@@ -11,4 +11,7 @@ func main() {
 	filesystem.Create("a.txt")
 	filesystem.Ls()
 	filesystem.Stat("file.txt")
+	filesystem.Link("file.txt","file2.txt")
+	filesystem.Stat("file.txt")
+	filesystem.Stat("file2.txt")
 } 
