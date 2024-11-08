@@ -1,25 +1,22 @@
 package filesystem
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type FileSystem struct {
-	descriptorsCount int
-	descriptors []int
 	directory map[string]*fileDescriptor
 }
 
 func (fs * FileSystem) Mkfs (descriptorsCount int) {
 	fs.directory = make(map[string]*fileDescriptor)
-	fs.descriptorsCount = descriptorsCount
-	fs.descriptors = make([]int, fs.descriptorsCount)
-	for i := 0; i < fs.descriptorsCount; i++ {
-		fs.descriptors[i] = i
-	}
-	fmt.Println("Creating file system with", fs.descriptorsCount, "descriptors")
+	fmt.Println("Creating file system with")
 }
 
 func (fs* FileSystem) Create (fileName string) {
-	descriptor := &fileDescriptor{ FileType:"reg", Nlink: 1, Size: 0, Id: 0}
+	id := int(time.Now().UnixNano())
+	descriptor := &fileDescriptor{ FileType:"reg", Nlink: 1, Size: 0, Id: id}
 	fs.directory[fileName] = descriptor
 	fmt.Println("Create file:", fileName,"| Descriptor id:", descriptor.Id)
 }
