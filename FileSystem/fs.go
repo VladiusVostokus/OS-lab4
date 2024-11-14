@@ -54,3 +54,7 @@ func (fs *FileSystem) Unlink(fileName string) {
 func (fs *FileSystem) Find(fileName string) bool {
 	return fs.directory[fileName] != nil
 }
+
+func (fs *FileSystem) GetDescriptor(fileName string) *fileDescriptor {
+	return fs.directory[fileName]
+}
