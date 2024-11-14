@@ -38,3 +38,15 @@ func (c *Core) Stat(fileName string) {
 	}
 	fmt.Println("Error: File",fileName,"does not exist")
 }
+
+func (c *Core) Link(linkWith, toLink string) {
+	if (c.fs.Find(toLink)) {
+		fmt.Println("Error: File",toLink,"to create link exist already")
+		return
+	}
+	if (!c.fs.Find(linkWith)) {
+		fmt.Println("Error: File ",toLink,"to create link with does not exist")
+		return
+	}
+	c.fs.Link(linkWith, toLink)
+}

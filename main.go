@@ -13,11 +13,12 @@ func main() {
 	core.Ls()
 	core.Stat("file.txt")
 	core.Stat("bbbbb.txt")
+	core.Link("file.txt","file.txt")
+	core.Link("file3123.txt","file1.txt")
+	core.Link("file.txt","file2.txt")
+	core.Stat("file.txt")
+	core.Stat("file2.txt")
 	/*
-	filesystem.Stat("file.txt")
-	filesystem.Link("file.txt","file2.txt")
-	filesystem.Stat("file.txt")
-	filesystem.Stat("file2.txt")
 	filesystem.Unlink("file.txt")
 	filesystem.Stat("file2.txt")
 	*/
