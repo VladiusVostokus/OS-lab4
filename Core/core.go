@@ -86,3 +86,13 @@ func (c *Core) findFreeIndex() int {
 	}
 	return freeIndex
 }
+
+
+func (c *Core) Close(fd *fs.OpenFileDescriptor) {
+	if (fd == nil) {
+		fmt.Println("Error: closing of non-existing file")
+		return
+	}
+	fmt.Println("Closing file")
+	c.openFileDescriptors[fd.Id] = nil
+}

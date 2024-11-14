@@ -21,5 +21,6 @@ func main() {
 	core.Unlink("fileaaaa.txt")
 	core.Unlink("file.txt")
 	core.Stat("file2.txt")
-	core.Open("file2.txt","rw")
+	fd := core.Open("file2.txt","rw")
+	core.Close(fd)
 } 
