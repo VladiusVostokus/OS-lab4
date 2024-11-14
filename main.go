@@ -7,11 +7,10 @@ import (
 func main() {
 	core := c.Core{}
 	core.Mkfs(100)
+	core.Create("file.txt")
+	core.Create("file.txt")
+	core.Create("a.txt")
 	/*
-	filesystem := fs.FileSystem{}
-	filesystem.Mkfs()
-	filesystem.Create("file.txt")
-	filesystem.Create("a.txt")
 	filesystem.Ls()
 	filesystem.Stat("file.txt")
 	filesystem.Link("file.txt","file2.txt")

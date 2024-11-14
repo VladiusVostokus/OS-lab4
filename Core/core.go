@@ -18,3 +18,11 @@ func (c *Core) Mkfs (descriptorsCount int) {
 	c.fs.Mkfs()
 	fmt.Println("System is ready to work!\n")
 }
+
+func (c *Core) Create(fileName string) {
+	if (c.fs.Find(fileName)) {
+		fmt.Println("Error: File",fileName,"exist already")
+		return
+	}
+	c.fs.Create(fileName)
+}
