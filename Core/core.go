@@ -50,3 +50,11 @@ func (c *Core) Link(linkWith, toLink string) {
 	}
 	c.fs.Link(linkWith, toLink)
 }
+
+func (c *Core) Unlink(fileName string) {
+	if (!c.fs.Find(fileName)) {
+		fmt.Println("Error: File",fileName,"to delete does not exist")
+		return
+	}
+	c.fs.Unlink(fileName)
+}

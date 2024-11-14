@@ -18,8 +18,7 @@ func main() {
 	core.Link("file.txt","file2.txt")
 	core.Stat("file.txt")
 	core.Stat("file2.txt")
-	/*
-	filesystem.Unlink("file.txt")
-	filesystem.Stat("file2.txt")
-	*/
+	core.Unlink("fileaaaa.txt")
+	core.Unlink("file.txt")
+	core.Stat("file2.txt")
 } 
