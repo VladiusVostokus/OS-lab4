@@ -1,12 +1,15 @@
 package main
 
 import (
-	fs "OS_lab4/FileSystem"
+	c "OS_lab4/Core"
 )
 
 func main() {
+	core := c.Core{}
+	core.Mkfs(100)
+	/*
 	filesystem := fs.FileSystem{}
-	filesystem.Mkfs(100)
+	filesystem.Mkfs()
 	filesystem.Create("file.txt")
 	filesystem.Create("a.txt")
 	filesystem.Ls()
@@ -16,4 +19,5 @@ func main() {
 	filesystem.Stat("file2.txt")
 	filesystem.Unlink("file.txt")
 	filesystem.Stat("file2.txt")
+	*/
 } 

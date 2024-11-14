@@ -9,9 +9,10 @@ type FileSystem struct {
 	directory map[string]*fileDescriptor
 }
 
-func (fs * FileSystem) Mkfs (descriptorsCount int) {
+func (fs * FileSystem) Mkfs () {
+	fmt.Println("Create file system...")
 	fs.directory = make(map[string]*fileDescriptor)
-	fmt.Println("Creating file system with")
+	fmt.Println("File system created")
 }
 
 func (fs* FileSystem) Create (fileName string) {
