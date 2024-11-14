@@ -1,7 +1,7 @@
 package filesystem
 
 type OpenFileDescriptor struct {
-	desc *fileDescriptor
-	offset int
-	flags string
+	Desc *fileDescriptor
+	Offset int
+	Flags string
 }
