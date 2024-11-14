@@ -6,5 +6,4 @@ type block [blockSize]byte
 
 type fileData struct {
 	data []block
-	offset int
 }
