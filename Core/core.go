@@ -26,3 +26,7 @@ func (c *Core) Create(fileName string) {
 	}
 	c.fs.Create(fileName)
 }
+
+func (c *Core) Ls() {
+	c.fs.Ls()
+}

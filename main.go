@@ -10,8 +10,8 @@ func main() {
 	core.Create("file.txt")
 	core.Create("file.txt")
 	core.Create("a.txt")
+	core.Ls()
 	/*
-	filesystem.Ls()
 	filesystem.Stat("file.txt")
 	filesystem.Link("file.txt","file2.txt")
 	filesystem.Stat("file.txt")
