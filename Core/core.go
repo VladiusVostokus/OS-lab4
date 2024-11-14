@@ -67,5 +67,21 @@ func (c *Core) Open(fileName, flags string)  {
 	fmt.Println("Open file", fileName)
 	descriptor := c.fs.GetDescriptor(fileName)
 	openFileDescriptor := &fs.OpenFileDescriptor{Desc: descriptor, Offset: 0, Flags: flags}
-	c.openFileDescriptors[0] = openFileDescriptor
+	index := c.findFreeIndex()
+	if (index == -1) {
+		fmt.Println("No free descriptor indexes")
+		return
+	}
+	c.openFileDescriptors[index] = openFileDescriptor
+}
+
+func (c *Core) findFreeIndex() int {
+	freeIndex := -1
+	for i, v := range c.openFileDescriptors {
+		if (v == nil) {
+			freeIndex = i
+			break
+		}
+	}
+	return freeIndex
 }
