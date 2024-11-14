@@ -30,3 +30,11 @@ func (c *Core) Create(fileName string) {
 func (c *Core) Ls() {
 	c.fs.Ls()
 }
+
+func (c *Core) Stat(fileName string) {
+	if (c.fs.Find(fileName)) {
+		c.fs.Stat(fileName)
+		return
+	}
+	fmt.Println("Error: File",fileName,"does not exist")
+}

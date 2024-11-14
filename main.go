@@ -11,6 +11,8 @@ func main() {
 	core.Create("file.txt")
 	core.Create("a.txt")
 	core.Ls()
+	core.Stat("file.txt")
+	core.Stat("bbbbb.txt")
 	/*
 	filesystem.Stat("file.txt")
 	filesystem.Link("file.txt","file2.txt")
