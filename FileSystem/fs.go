@@ -50,3 +50,7 @@ func (fs *FileSystem) Unlink(fileName string) {
 	descriptor.Nlink--
 	delete(fs.directory, fileName)
 }
+
+func (fs *FileSystem) Find(fileName string) bool {
+	return fs.directory[fileName] != nil
+}
