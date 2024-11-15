@@ -96,3 +96,16 @@ func (c *Core) Close(fd *fs.OpenFileDescriptor) {
 	fmt.Println("Closing file")
 	c.openFileDescriptors[fd.Id] = nil
 }
+
+func (c *Core) Truncate(fileName string, size int) {
+	if (size <= 0) {
+		fmt.Println("Error: Incorrect size to truncate, must be bigger than 0")
+		return
+	}
+	if (!c.fs.Find(fileName)) {
+		fmt.Println("Error: File",fileName,"to truncate does not exist")
+		return
+	}
+	descriptor := c.fs.GetDescriptor(fileName)
+	descriptor.Size = size
+}

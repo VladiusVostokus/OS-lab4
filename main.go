@@ -23,4 +23,7 @@ func main() {
 	core.Stat("file2.txt")
 	fd := core.Open("file2.txt","rw")
 	core.Close(fd)
+	core.Truncate("file2.txt",-10)
+	core.Truncate("file2.txt",10)
+	core.Stat("file2.txt")
 } 
