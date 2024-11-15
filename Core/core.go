@@ -109,3 +109,32 @@ func (c *Core) Truncate(fileName string, size int) {
 	descriptor := c.fs.GetDescriptor(fileName)
 	descriptor.Size = size
 }
+
+func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
+	if (size <= 0) {
+		fmt.Println("Error: Incorrect size to read, must be bigger than 0")
+		return
+	}
+	data := fd.Desc.Data
+	res := data[0]
+	fmt.Println(res[0:size])
+}
+
+func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
+	blocksCount := 1
+	blocksCount += size / 32
+	if (fd.Desc.Nblock < blocksCount) {
+		fd.Desc.Nblock += blocksCount
+		fd.Desc.Data = make(map[int]*fs.Block)
+		for i := 0; i < blocksCount; i++ {
+			block := new(fs.Block)
+			fd.Desc.Data[i] = block
+		}
+	}
+	for i := 0; i < blocksCount; i++ {
+		block := fd.Desc.Data[i]
+		for j := 0; j < size; j++ {
+			block[j] = 'a'
+		}
+	}
+}
