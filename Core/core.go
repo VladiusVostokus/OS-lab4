@@ -119,11 +119,13 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 	blocksCount += size / 32
 	curIndex := 0
 	res := ""
-	for i := fd.Offset; i < blocksCount; i++ {
-		curIndex = i
-		block := fd.Desc.Data[i]
-		for j := 0; j < 32; j++ {
-			res += string(block[j])
+	if (blocksCount > 1) {
+		for i := fd.Offset; i < blocksCount; i++ {
+			curIndex = i
+			block := fd.Desc.Data[i]
+			for j := 0; j < 32; j++ {
+				res += string(block[j])
+			}
 		}
 	}
 	residue := size % 32
