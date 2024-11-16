@@ -115,6 +115,10 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 		fmt.Println("Error: Incorrect size to read, must be bigger than 0")
 		return
 	}
+	if (size > fd.Desc.Size) {
+		fmt.Println("Error: Incorrect size to read, must not be bigger than file size")
+		return
+	}
 	blocksCount := 1
 	blocksCount += size / 32
 	curIndex := 0

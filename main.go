@@ -31,5 +31,6 @@ func main() {
 	core.Write(fd, 20)
 	core.Write(fd, 10)
 	core.Read(fd, 10)
+	core.Read(fd, 20)
 	core.Close(fd)
 } 
