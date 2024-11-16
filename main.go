@@ -32,5 +32,10 @@ func main() {
 	core.Write(fd, 10)
 	core.Read(fd, 10)
 	core.Read(fd, 20)
+
+	core.Truncate("file2.txt",40)
+	core.Write(fd, 20)
+	core.Read(fd, 35)
+	core.Read(fd, 30)
 	core.Close(fd)
 } 

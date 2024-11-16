@@ -121,11 +121,16 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 	}
 	blocksCount := 1
 	blocksCount += size / 32
-	curIndex := 0
+	if (fd.Desc.Nblock < blocksCount) {
+		fmt.Println("Error: Incorrect size to read, count of blocks to read is more than number of descriptor blocks")
+		return
+	}
+	blockReadFrom := fd.Offset % 32
+	curBlock := blockReadFrom
 	res := ""
 	if (blocksCount > 1) {
-		for i := fd.Offset; i < blocksCount; i++ {
-			curIndex = i
+		for i := blockReadFrom; i != blocksCount; i++ {
+			curBlock = i
 			block := fd.Desc.Data[i]
 			for j := 0; j < 32; j++ {
 				res += string(block[j])
@@ -134,7 +139,7 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 	}
 	residue := size % 32
 	if (residue > 0) {
-		block := fd.Desc.Data[curIndex]
+		block := fd.Desc.Data[curBlock]
 		for i := 0; i < residue; i++ {
 			res += string(block[i])
 		}
@@ -157,10 +162,11 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 			fd.Desc.Data[i] = block
 		}
 	}
-	curIndex := fd.Offset
+	blockWriteFrom := fd.Offset % 32
+	curBlock := blockWriteFrom
 	if (blocksCount > 1) {
-		for i := fd.Offset; i < blocksCount; i++ {
-			curIndex = i
+		for i := blockWriteFrom; i < blocksCount; i++ {
+			curBlock = i
 			block := fd.Desc.Data[i]
 			for j := 0; j < 32; j++ {
 				block[j] = 'a'
@@ -169,7 +175,7 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 	}
 	residue := size % 32
 	if (residue > 0) {
-		block := fd.Desc.Data[curIndex]
+		block := fd.Desc.Data[curBlock]
 		for i := 0; i < residue; i++ {
 			block[i] = 'a'
 		}
