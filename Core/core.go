@@ -139,6 +139,10 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 }
 
 func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
+	if (size > fd.Desc.Size) {
+		fmt.Println("Error: Incorrect size to write, must be less than file size")
+		return
+	}
 	blocksCount := 1
 	blocksCount += size / 32
 	if (fd.Desc.Nblock < blocksCount) {

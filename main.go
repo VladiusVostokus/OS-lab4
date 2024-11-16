@@ -28,7 +28,8 @@ func main() {
 	core.Stat("file2.txt")
 
 	fd = core.Open("file2.txt","rw")
-	core.Write(fd, 40)
-	core.Read(fd, 40)
+	core.Write(fd, 20)
+	core.Write(fd, 10)
+	core.Read(fd, 10)
 	core.Close(fd)
 } 
