@@ -181,3 +181,7 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 		}
 	}
 }
+
+func (c *Core) Seek(fd *fs.OpenFileDescriptor, offset int) {
+	fd.Offset = offset
+}
