@@ -162,7 +162,11 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 			fd.Desc.Data[i] = block
 		}
 	}
-	blockWriteFrom := fd.Offset % 32
+	blockWriteFrom := (fd.Offset + size) / 32
+	if (fd.Desc.Data[blockWriteFrom] == nil) {
+		block := new(fs.Block)
+		fd.Desc.Data[blockWriteFrom] = block
+	}
 	curBlock := blockWriteFrom
 	if (blocksCount > 1) {
 		for i := blockWriteFrom; i < blocksCount; i++ {
