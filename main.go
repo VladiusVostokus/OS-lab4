@@ -34,8 +34,11 @@ func main() {
 	core.Read(fd, 20)
 
 	core.Truncate("file2.txt",40)
-	core.Write(fd, 20)
-	core.Read(fd, 35)
-	core.Read(fd, 30)
+	core.Write(fd, 35)
+	core.Read(fd, 15)
+	core.Seek(fd, 40)
+	core.Read(fd, 32)
+	core.Seek(fd, 5)
+	core.Read(fd, 5)
 	core.Close(fd)
 } 

@@ -73,6 +73,7 @@ func (c *Core) Open(fileName, flags string) *fs.OpenFileDescriptor{
 	descriptor := c.fs.GetDescriptor(fileName)
 	openFileDescriptor := &fs.OpenFileDescriptor{Desc: descriptor, Offset: 0, Flags: flags, Id: index}
 	c.openFileDescriptors[index] = openFileDescriptor
+	openFileDescriptor.Desc.Data = make(map[int]*fs.Block)
 	return openFileDescriptor
 }
 
@@ -119,30 +120,31 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 		fmt.Println("Error: Incorrect size to read, must not be bigger than file size")
 		return
 	}
-	blocksCount := 1
-	blocksCount += size / 32
-	if (fd.Desc.Nblock < blocksCount) {
-		fmt.Println("Error: Incorrect size to read, count of blocks to read is more than number of descriptor blocks")
-		return
-	}
-	blockReadFrom := fd.Offset % 32
-	curBlock := blockReadFrom
+	curOffset := fd.Offset
+	totalSize := size
+	bytesToRead := 0
 	res := ""
-	if (blocksCount > 1) {
-		for i := blockReadFrom; i != blocksCount; i++ {
-			curBlock = i
-			block := fd.Desc.Data[i]
-			for j := 0; j < 32; j++ {
-				res += string(block[j])
-			}
+	for totalSize > 0 {
+		curBlock := curOffset / 32
+		offsetInsideBlock := curOffset % 32
+		if (fd.Desc.Data[curBlock] == nil) {
+			nullBlock := "00000000000000000000000000000000"
+			res += nullBlock
+			curOffset += 32
+			totalSize -= 32
+			continue
 		}
-	}
-	residue := size % 32
-	if (residue > 0) {
+		if (totalSize > (32 - offsetInsideBlock)) {
+			bytesToRead = 32 - offsetInsideBlock
+		} else {
+			bytesToRead = totalSize
+		}
 		block := fd.Desc.Data[curBlock]
-		for i := 0; i < residue; i++ {
+		for i := offsetInsideBlock; i < offsetInsideBlock + bytesToRead; i++ {
 			res += string(block[i])
 		}
+		curOffset += bytesToRead
+		totalSize -= bytesToRead
 	}
 	fmt.Println(res)
 }
@@ -152,37 +154,31 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 		fmt.Println("Error: Incorrect size to write, must be less than file size")
 		return
 	}
-	blocksCount := 1
-	blocksCount += size / 32
-	if (fd.Desc.Nblock < blocksCount) {
-		fd.Desc.Nblock += blocksCount
+	if (fd.Desc.Nblock == 0) {
 		fd.Desc.Data = make(map[int]*fs.Block)
-		for i := 0; i < blocksCount; i++ {
+	}
+	curOffset := fd.Offset
+	totalSize := size
+	bytesToWrite := 0
+	for totalSize > 0 {
+		curBlock := curOffset / 32
+		offsetInsideBlock := curOffset % 32
+		if (fd.Desc.Data[curBlock] == nil) {
 			block := new(fs.Block)
-			fd.Desc.Data[i] = block
+			fd.Desc.Data[curBlock] = block
+			fd.Desc.Nblock++
 		}
-	}
-	blockWriteFrom := (fd.Offset + size) / 32
-	if (fd.Desc.Data[blockWriteFrom] == nil) {
-		block := new(fs.Block)
-		fd.Desc.Data[blockWriteFrom] = block
-	}
-	curBlock := blockWriteFrom
-	if (blocksCount > 1) {
-		for i := blockWriteFrom; i < blocksCount; i++ {
-			curBlock = i
-			block := fd.Desc.Data[i]
-			for j := 0; j < 32; j++ {
-				block[j] = 'a'
-			}
+		if (totalSize > (32 - offsetInsideBlock)) {
+			bytesToWrite = 32 - offsetInsideBlock
+		} else {
+			bytesToWrite = totalSize
 		}
-	}
-	residue := size % 32
-	if (residue > 0) {
 		block := fd.Desc.Data[curBlock]
-		for i := 0; i < residue; i++ {
+		for i := offsetInsideBlock; i < offsetInsideBlock + bytesToWrite; i++ {
 			block[i] = 'a'
 		}
+		curOffset += bytesToWrite
+		totalSize -= bytesToWrite
 	}
 }
 
