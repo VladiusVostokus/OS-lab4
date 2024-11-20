@@ -183,5 +183,9 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 }
 
 func (c *Core) Seek(fd *fs.OpenFileDescriptor, offset int) {
+	if (offset < 0) {
+		fmt.Println("Error: Offset can not be less than 0")
+		return
+	}
 	fd.Offset = offset
 }

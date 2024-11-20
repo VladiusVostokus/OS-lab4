@@ -40,5 +40,6 @@ func main() {
 	core.Read(fd, 32)
 	core.Seek(fd, 5)
 	core.Read(fd, 5)
+	core.Seek(fd, -10)
 	core.Close(fd)
 } 
