@@ -19,6 +19,7 @@ func (fs* FileSystem) Create (fileName string) {
 	id := int(time.Now().UnixNano())
 	descriptor := &fileDescriptor{ FileType:"reg", Nlink: 1, Size: 0, Id: id}
 	fs.directory[fileName] = descriptor
+	descriptor.Data = make(map[int]*Block)
 	fmt.Println("Create file:", fileName,"| Descriptor id:", descriptor.Id)
 }
 

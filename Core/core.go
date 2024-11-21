@@ -154,9 +154,6 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 		fmt.Println("Error: Incorrect size to write, must be less than file size")
 		return
 	}
-	if (fd.Desc.Nblock == 0) {
-		fd.Desc.Data = make(map[int]*fs.Block)
-	}
 	curOffset := fd.Offset
 	totalSize := size
 	bytesToWrite := 0
