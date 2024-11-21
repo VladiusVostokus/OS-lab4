@@ -2,6 +2,7 @@ package main
 
 import (
 	c "OS_lab4/Core"
+	"fmt"
 )
 
 func main() {
@@ -47,5 +48,18 @@ func main() {
 	core.Read(fd, 5)
 	core.Seek(fd, -10)
 	core.Seek(fd, 100)
-	core.Close(fd) 
+	core.Close(fd)
+
+	fmt.Println("======================")
+	fd = core.Open("file2.txt","rw")
+	core.Seek(fd, 0)
+	core.Truncate("file2.txt", 65)
+	str = []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	core.Write(fd, str)
+	core.Stat("file2.txt")
+	core.Read(fd, 55)
+	core.Truncate("file2.txt", 10)
+	core.Read(fd, 10)
+	core.Stat("file2.txt")
+	core.Close(fd)
 } 

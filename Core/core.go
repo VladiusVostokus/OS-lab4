@@ -108,6 +108,20 @@ func (c *Core) Truncate(fileName string, size int) {
 		return
 	}
 	descriptor := c.fs.GetDescriptor(fileName)
+	if (descriptor.Size > size) {
+		newBlockCount := size / 32
+		remainingBytes := size % 32
+		if (remainingBytes > 0) {
+			newBlockCount++
+		}
+		for i := newBlockCount; descriptor.Nblock > newBlockCount; i++ {
+			if (descriptor.Data[i] == nil) {
+				continue
+			}
+			delete(descriptor.Data, i)
+			descriptor.Nblock--
+		}
+	}
 	descriptor.Size = size
 }
 
@@ -162,7 +176,7 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, data []byte) {
 		if (fd.Desc.Data[curBlock] == nil) {
 			block := new(fs.Block)
 			fd.Desc.Data[curBlock] = block
-			fd.Desc.Nblock++
+			fd.Desc.Nblock = len(fd.Desc.Data)
 		}
 		if (totalSize > (32 - offsetInsideBlock)) {
 			bytesToWrite = 32 - offsetInsideBlock
