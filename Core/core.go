@@ -140,22 +140,21 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 			bytesToRead = totalSize
 		}
 		block := fd.Desc.Data[curBlock]
-		for i := offsetInsideBlock; i < offsetInsideBlock + bytesToRead; i++ {
-			res += string(block[i])
-		}
+		readTo := offsetInsideBlock + bytesToRead
+		res += string(block[offsetInsideBlock:readTo])
 		curOffset += bytesToRead
 		totalSize -= bytesToRead
 	}
 	fmt.Println(res)
 }
 
-func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
-	if (size > fd.Desc.Size) {
+func (c *Core) Write(fd *fs.OpenFileDescriptor, data []byte) {
+	totalSize := len(data)
+	if (totalSize > fd.Desc.Size) {
 		fmt.Println("Error: Incorrect size to write, must be less than file size")
 		return
 	}
 	curOffset := fd.Offset
-	totalSize := size
 	bytesToWrite := 0
 	for totalSize > 0 {
 		curBlock := curOffset / 32
@@ -171,9 +170,9 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, size int) {
 			bytesToWrite = totalSize
 		}
 		block := fd.Desc.Data[curBlock]
-		for i := offsetInsideBlock; i < offsetInsideBlock + bytesToWrite; i++ {
-			block[i] = 'a'
-		}
+		writeTo := offsetInsideBlock + bytesToWrite
+		getDataTo := curOffset + bytesToWrite
+		copy(block[offsetInsideBlock:writeTo], data[curOffset:getDataTo])
 		curOffset += bytesToWrite
 		totalSize -= bytesToWrite
 	}

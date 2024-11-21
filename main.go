@@ -28,19 +28,24 @@ func main() {
 	core.Stat("file2.txt")
 
 	fd = core.Open("file2.txt","rw")
-	core.Write(fd, 20)
-	core.Write(fd, 10)
+
+	str1 := []byte("aaaaaaaaaaaaaaaaaaaa")
+	str2 := []byte("10 len str")
+	core.Write(fd, str1)
+	core.Write(fd, str2)
 	core.Read(fd, 10)
 	core.Read(fd, 20)
 
+	
 	core.Truncate("file2.txt",40)
-	core.Write(fd, 35)
-	core.Read(fd, 15)
+	str := []byte("This string contains 32 symbols 123")
+	core.Write(fd, str)
+	core.Read(fd, 35)
 	core.Seek(fd, 40)
 	core.Read(fd, 32)
 	core.Seek(fd, 5)
 	core.Read(fd, 5)
 	core.Seek(fd, -10)
 	core.Seek(fd, 100)
-	core.Close(fd)
+	core.Close(fd) 
 } 
