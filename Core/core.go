@@ -187,5 +187,9 @@ func (c *Core) Seek(fd *fs.OpenFileDescriptor, offset int) {
 		fmt.Println("Error: Offset can not be less than 0")
 		return
 	}
+	if (offset > fd.Desc.Size) {
+		fmt.Println("Error: Offset can not be bigger tnah file size")
+		return
+	}
 	fd.Offset = offset
 }
