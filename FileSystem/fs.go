@@ -35,7 +35,8 @@ func (fs *FileSystem) Stat(fileName string) {
 	fmt.Println("Type:", descriptor.FileType, 
 				"\tId:",descriptor.Id, 
 				"\tHard links count:", descriptor.Nlink, 
-				"\tSize:", descriptor.Size)
+				"\tSize:", descriptor.Size,
+				"\tBlocks:", descriptor.Nblock)
 }
 
 func (fs *FileSystem) Link(linkWith, toLink string) {
