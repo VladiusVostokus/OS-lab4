@@ -52,7 +52,6 @@ func main() {
 
 	fmt.Println("======================")
 	fd = core.Open("file2.txt","rw")
-	core.Seek(fd, 0)
 	core.Truncate("file2.txt", 65)
 	str = []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	core.Write(fd, str)
@@ -61,5 +60,8 @@ func main() {
 	core.Truncate("file2.txt", 10)
 	core.Read(fd, 10)
 	core.Stat("file2.txt")
+	core.Truncate("file2.txt", 200)
+	core.Seek(fd, 100)
+	core.Read(fd, 4)
 	core.Close(fd)
 } 

@@ -141,17 +141,18 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 	for totalSize > 0 {
 		curBlock := curOffset / 32
 		offsetInsideBlock := curOffset % 32
-		if (fd.Desc.Data[curBlock] == nil) {
-			nullBlock := "00000000000000000000000000000000"
-			res += nullBlock
-			curOffset += 32
-			totalSize -= 32
-			continue
-		}
 		if (totalSize > (32 - offsetInsideBlock)) {
 			bytesToRead = 32 - offsetInsideBlock
 		} else {
 			bytesToRead = totalSize
+		}
+		if (fd.Desc.Data[curBlock] == nil) {
+			for i := 0; i < bytesToRead; i++ {
+				res += "0"
+			}
+			curOffset += bytesToRead
+			totalSize -= bytesToRead
+			continue
 		}
 		block := fd.Desc.Data[curBlock]
 		readTo := offsetInsideBlock + bytesToRead
