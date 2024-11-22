@@ -89,13 +89,14 @@ func (c *Core) findFreeIndex() int {
 }
 
 
-func (c *Core) Close(fd *fs.OpenFileDescriptor) {
+func (c *Core) Close(fd *fs.OpenFileDescriptor) *fs.OpenFileDescriptor {
 	if (fd == nil) {
 		fmt.Println("Error: closing of non-existing file")
-		return
+		return nil
 	}
 	fmt.Println("Closing file")
 	c.openFileDescriptors[fd.Id] = nil
+	return nil
 }
 
 func (c *Core) Truncate(fileName string, size int) {
