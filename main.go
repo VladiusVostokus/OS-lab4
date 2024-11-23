@@ -47,8 +47,9 @@ func main() {
 
 	fmt.Println("\n=======================Test write/read with offset=========================")
 	core.Truncate("file2.txt",40)
-	str := []byte("This string contains 32 symbols 123")
+	str := []byte("This string contains 32 symbols 35!")
 	core.Write(fd, str)
+	core.Read(fd, 32)
 	core.Read(fd, 35)
 	core.Seek(fd, 40)
 	core.Read(fd, 32)
