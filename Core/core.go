@@ -56,7 +56,11 @@ func (c *Core) Unlink(fileName string) {
 		fmt.Println("Error: File",fileName,"to delete does not exist")
 		return
 	}
+	descriptor := c.fs.GetDescriptor(fileName)
 	c.fs.Unlink(fileName)
+	if (descriptor.Nlink == 0 && !descriptor.IsOpen) {
+		descriptor = nil
+	}
 }
 
 func (c *Core) Open(fileName, flags string) *fs.OpenFileDescriptor{
@@ -71,6 +75,7 @@ func (c *Core) Open(fileName, flags string) *fs.OpenFileDescriptor{
 	}
 	fmt.Println("Open file", fileName)
 	descriptor := c.fs.GetDescriptor(fileName)
+	descriptor.IsOpen = true
 	openFileDescriptor := &fs.OpenFileDescriptor{Desc: descriptor, Offset: 0, Flags: flags, Id: index}
 	c.openFileDescriptors[index] = openFileDescriptor
 	openFileDescriptor.Desc.Data = make(map[int]*fs.Block)
@@ -96,6 +101,10 @@ func (c *Core) Close(fd *fs.OpenFileDescriptor) *fs.OpenFileDescriptor {
 	}
 	fmt.Println("Closing file")
 	c.openFileDescriptors[fd.Id] = nil
+	fd.Desc.IsOpen = false
+	if(fd.Desc.Nlink == 0 && !fd.Desc.IsOpen) {
+		fd.Desc = nil
+	}
 	return nil
 }
 

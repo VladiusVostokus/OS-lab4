@@ -5,4 +5,5 @@ type fileDescriptor struct{
 	Nlink, Size, Id int
 	Data map[int]*Block
 	Nblock int
+	IsOpen bool
 }

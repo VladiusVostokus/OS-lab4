@@ -48,7 +48,7 @@ func main() {
 	core.Read(fd, 5)
 	core.Seek(fd, -10)
 	core.Seek(fd, 100)
-	core.Close(fd)
+	fd = core.Close(fd)
 
 	fmt.Println("======================")
 	fd = core.Open("file2.txt","rw")
@@ -63,5 +63,20 @@ func main() {
 	core.Truncate("file2.txt", 200)
 	core.Seek(fd, 100)
 	core.Read(fd, 4)
-	core.Close(fd)
-} 
+	fd = core.Close(fd)
+
+	// Test unlink and write\read after that
+	core.Create("unlink.txt")
+	core.Truncate("unlink.txt", 23)
+	fdd := core.Open("unlink.txt","rw")
+	fdd2 := core.Open("unlink.txt","rw")
+	core.Unlink("unlink.txt")
+	core.Stat("unlink.txt")
+	str = []byte("Content of deleted file")
+	core.Write(fdd, str)
+	core.Read(fdd, 23)
+	fdd = core.Close(fdd)
+
+	core.Read(fdd2, 23)
+	fdd2 = core.Close(fdd2)
+}
