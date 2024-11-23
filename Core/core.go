@@ -8,11 +8,13 @@ import (
 type Core struct {
 	fs *fs.FileSystem
 	openFileDescriptors []*fs.OpenFileDescriptor
+	blockSize int
 }
 
 func (c *Core) Mkfs (descriptorsCount int) {
 	fmt.Println("System initialization...")
 	c.openFileDescriptors = make([]*fs.OpenFileDescriptor, descriptorsCount)
+	c.blockSize = fs.BlockSize
 	fmt.Println("Create core with", descriptorsCount, "possible open file descpriptors")
 	c.fs = &fs.FileSystem{}
 	c.fs.Mkfs()
@@ -119,8 +121,8 @@ func (c *Core) Truncate(fileName string, size int) {
 	}
 	descriptor := c.fs.GetDescriptor(fileName)
 	if (descriptor.Size > size) {
-		newBlockCount := size / 32
-		remainingBytes := size % 32
+		newBlockCount := size / c.blockSize
+		remainingBytes := size % c.blockSize
 		if (remainingBytes > 0) {
 			newBlockCount++
 		}
@@ -149,10 +151,10 @@ func (c *Core) Read(fd *fs.OpenFileDescriptor, size int) {
 	bytesToRead := 0
 	res := ""
 	for totalSize > 0 {
-		curBlock := curOffset / 32
-		offsetInsideBlock := curOffset % 32
-		if (totalSize > (32 - offsetInsideBlock)) {
-			bytesToRead = 32 - offsetInsideBlock
+		curBlock := curOffset / c.blockSize
+		offsetInsideBlock := curOffset % c.blockSize
+		if (totalSize > (c.blockSize - offsetInsideBlock)) {
+			bytesToRead = c.blockSize - offsetInsideBlock
 		} else {
 			bytesToRead = totalSize
 		}
@@ -182,15 +184,15 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, data []byte) {
 	curOffset := fd.Offset
 	bytesToWrite := 0
 	for totalSize > 0 {
-		curBlock := curOffset / 32
-		offsetInsideBlock := curOffset % 32
+		curBlock := curOffset / c.blockSize
+		offsetInsideBlock := curOffset % c.blockSize
 		if (fd.Desc.Data[curBlock] == nil) {
 			block := new(fs.Block)
 			fd.Desc.Data[curBlock] = block
 			fd.Desc.Nblock = len(fd.Desc.Data)
 		}
-		if (totalSize > (32 - offsetInsideBlock)) {
-			bytesToWrite = 32 - offsetInsideBlock
+		if (totalSize > (c.blockSize - offsetInsideBlock)) {
+			bytesToWrite = c.blockSize - offsetInsideBlock
 		} else {
 			bytesToWrite = totalSize
 		}
