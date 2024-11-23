@@ -28,7 +28,7 @@ func main() {
 	core.Stat("file2.txt")
 
 	fmt.Println("\n============================Test open/close================================")
-	fd := core.Open("file2.txt","rw")
+	fd := core.Open("file2.txt")
 	core.Close(fd)
 
 	fmt.Println("\n============================Test truncate==================================")
@@ -37,7 +37,7 @@ func main() {
 	core.Stat("file2.txt")
 
 	fmt.Println("\n==============================Test write/read==============================")
-	fd = core.Open("file2.txt","rw")
+	fd = core.Open("file2.txt")
 	str1 := []byte("20 len str is here !")
 	str2 := []byte("10 len str")
 	core.Write(fd, str1)
@@ -64,7 +64,7 @@ func main() {
 	fd = core.Close(fd)
 
 	fmt.Println("\n=======================Test truncate with less size========================")
-	fd = core.Open("file2.txt","rw")
+	fd = core.Open("file2.txt")
 	core.Truncate("file2.txt", 65)
 	str = []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	core.Write(fd, str)
@@ -81,8 +81,8 @@ func main() {
 	fmt.Println("\n===================Test write/read after open and unlink===================")
 	core.Create("unlink.txt")
 	core.Truncate("unlink.txt", 23)
-	fdd := core.Open("unlink.txt","rw")
-	fdd2 := core.Open("unlink.txt","rw")
+	fdd := core.Open("unlink.txt")
+	fdd2 := core.Open("unlink.txt")
 	core.Unlink("unlink.txt")
 	core.Stat("unlink.txt")
 	str = []byte("Content of deleted file")

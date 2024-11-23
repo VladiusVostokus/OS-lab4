@@ -4,5 +4,4 @@ type OpenFileDescriptor struct {
 	Id int
 	Desc *fileDescriptor
 	Offset int
-	Flags string
 }

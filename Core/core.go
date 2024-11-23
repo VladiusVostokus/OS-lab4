@@ -63,7 +63,7 @@ func (c *Core) Unlink(fileName string) {
 	}
 }
 
-func (c *Core) Open(fileName, flags string) *fs.OpenFileDescriptor{
+func (c *Core) Open(fileName string) *fs.OpenFileDescriptor{
 	if (!c.fs.Find(fileName)) {
 		fmt.Println("Error: File",fileName,"to open does not exist")
 		return nil
@@ -76,7 +76,7 @@ func (c *Core) Open(fileName, flags string) *fs.OpenFileDescriptor{
 	fmt.Println("Open file", fileName)
 	descriptor := c.fs.GetDescriptor(fileName)
 	descriptor.IsOpen = true
-	openFileDescriptor := &fs.OpenFileDescriptor{Desc: descriptor, Offset: 0, Flags: flags, Id: index}
+	openFileDescriptor := &fs.OpenFileDescriptor{Desc: descriptor, Offset: 0, Id: index}
 	c.openFileDescriptors[index] = openFileDescriptor
 	openFileDescriptor.Desc.Data = make(map[int]*fs.Block)
 	return openFileDescriptor
