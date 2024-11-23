@@ -38,7 +38,7 @@ func main() {
 
 	fmt.Println("\n==============================Test write/read==============================")
 	fd = core.Open("file2.txt","rw")
-	str1 := []byte("aaaaaaaaaaaaaaaaaaaa")
+	str1 := []byte("20 len str is here !")
 	str2 := []byte("10 len str")
 	core.Write(fd, str1)
 	core.Write(fd, str2)
@@ -54,6 +54,8 @@ func main() {
 	core.Seek(fd, 40)
 	core.Read(fd, 32)
 	core.Seek(fd, 5)
+	core.Read(fd, 5)
+	core.Seek(fd, 30)
 	core.Read(fd, 5)
 
 	fmt.Println("====================Test offset < 0 and offset < size======================")
