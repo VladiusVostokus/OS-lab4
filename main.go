@@ -90,8 +90,11 @@ func main() {
 	core.Read(fdd, 23)
 	fdd = core.Close(fdd)
 
-	core.Read(fdd2, 23)
+	
+	core.Seek(fdd2, 3)
+	aaa := []byte("aaa")
+	core.Write(fdd2, aaa)
+	core.Read(fdd2, 20)
 	fdd2 = core.Close(fdd2)
-
 	//core.Read(fdd2, 23) Should give and error
 }

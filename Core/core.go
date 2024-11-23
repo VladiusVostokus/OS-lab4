@@ -196,8 +196,9 @@ func (c *Core) Write(fd *fs.OpenFileDescriptor, data []byte) {
 		}
 		block := fd.Desc.Data[curBlock]
 		writeTo := offsetInsideBlock + bytesToWrite
-		getDataTo := curOffset + bytesToWrite
-		copy(block[offsetInsideBlock:writeTo], data[curOffset:getDataTo])
+		getDataFrom := curOffset - fd.Offset
+		getDataTo := getDataFrom + bytesToWrite
+		copy(block[offsetInsideBlock:writeTo], data[getDataFrom:getDataTo])
 		curOffset += bytesToWrite
 		totalSize -= bytesToWrite
 	}
