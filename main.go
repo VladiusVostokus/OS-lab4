@@ -8,12 +8,16 @@ import (
 func main() {
 	core := c.Core{}
 	core.Mkfs(100)
+
+	fmt.Println("\n=====================Test creation of FS and files=========================")
 	core.Create("file.txt")
 	core.Create("file.txt")
 	core.Create("a.txt")
 	core.Ls()
 	core.Stat("file.txt")
 	core.Stat("bbbbb.txt")
+
+	fmt.Println("\n===========================Test link/unlink================================")
 	core.Link("file.txt","file.txt")
 	core.Link("file3123.txt","file1.txt")
 	core.Link("file.txt","file2.txt")
@@ -22,14 +26,18 @@ func main() {
 	core.Unlink("fileaaaa.txt")
 	core.Unlink("file.txt")
 	core.Stat("file2.txt")
+
+	fmt.Println("\n============================Test open/close================================")
 	fd := core.Open("file2.txt","rw")
 	core.Close(fd)
+
+	fmt.Println("\n============================Test truncate==================================")
 	core.Truncate("file2.txt",-10)
 	core.Truncate("file2.txt",10)
 	core.Stat("file2.txt")
 
+	fmt.Println("\n==============================Test write/read==============================")
 	fd = core.Open("file2.txt","rw")
-
 	str1 := []byte("aaaaaaaaaaaaaaaaaaaa")
 	str2 := []byte("10 len str")
 	core.Write(fd, str1)
@@ -37,7 +45,7 @@ func main() {
 	core.Read(fd, 10)
 	core.Read(fd, 20)
 
-	
+	fmt.Println("\n=======================Test write/read with offset=========================")
 	core.Truncate("file2.txt",40)
 	str := []byte("This string contains 32 symbols 123")
 	core.Write(fd, str)
@@ -46,11 +54,13 @@ func main() {
 	core.Read(fd, 32)
 	core.Seek(fd, 5)
 	core.Read(fd, 5)
+
+	fmt.Println("====================Test offset < 0 and offset < size======================")
 	core.Seek(fd, -10)
 	core.Seek(fd, 100)
 	fd = core.Close(fd)
 
-	fmt.Println("======================")
+	fmt.Println("\n=======================Test truncate with less size========================")
 	fd = core.Open("file2.txt","rw")
 	core.Truncate("file2.txt", 65)
 	str = []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
@@ -65,7 +75,7 @@ func main() {
 	core.Read(fd, 4)
 	fd = core.Close(fd)
 
-	// Test unlink and write\read after that
+	fmt.Println("\n===================Test write/read after open and unlink===================")
 	core.Create("unlink.txt")
 	core.Truncate("unlink.txt", 23)
 	fdd := core.Open("unlink.txt","rw")
@@ -79,4 +89,6 @@ func main() {
 
 	core.Read(fdd2, 23)
 	fdd2 = core.Close(fdd2)
+
+	//core.Read(fdd2, 23) Should give and error
 }

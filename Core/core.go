@@ -16,7 +16,7 @@ func (c *Core) Mkfs (descriptorsCount int) {
 	fmt.Println("Create core with", descriptorsCount, "possible open file descpriptors")
 	c.fs = &fs.FileSystem{}
 	c.fs.Mkfs()
-	fmt.Println("System is ready to work!\n")
+	fmt.Println("System is ready to work!")
 }
 
 func (c *Core) Create(fileName string) {

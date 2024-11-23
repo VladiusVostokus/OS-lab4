@@ -10,7 +10,7 @@ type FileSystem struct {
 }
 
 func (fs * FileSystem) Mkfs () {
-	fmt.Println("Create file system...")
+	fmt.Println("Creation of file system...")
 	fs.directory = make(map[string]*fileDescriptor)
 	fmt.Println("File system created")
 }
